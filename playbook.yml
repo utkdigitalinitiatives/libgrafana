@@ -2,6 +2,18 @@
 - name: Configure Grafana repository
   hosts: all
   become: yes  # This is required to gain sudo privileges
+
+  handlers:
+    - name: reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: restart grafana
+      ansible.builtin.systemd:
+        name: grafana-server
+        state: restarted
+        enabled: yes  # This ensures the service is enabled to start at boot    
+
   tasks:
     - name: Download Grafana GPG key
       ansible.builtin.get_url:
@@ -13,6 +25,8 @@
       ansible.builtin.rpm_key:
         state: present
         key: /tmp/gpg.key
+      notify: reload systemd
+      
 
     - name: Copy Grafana repo file
       ansible.builtin.copy:
@@ -24,3 +38,4 @@
       ansible.builtin.dnf:
         name: grafana-enterprise
         state: present
+      notify: restart grafana
