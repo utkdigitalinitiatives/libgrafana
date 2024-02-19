@@ -1,0 +1,26 @@
+---
+- name: Configure Grafana repository
+  hosts: all
+  become: yes  # This is required to gain sudo privileges
+  tasks:
+    - name: Download Grafana GPG key
+      ansible.builtin.get_url:
+        url: https://rpm.grafana.com/gpg.key
+        dest: /tmp/gpg.key
+        mode: '0644'
+
+    - name: Import GPG key
+      ansible.builtin.rpm_key:
+        state: present
+        key: /tmp/gpg.key
+
+    - name: Copy Grafana repo file
+      ansible.builtin.copy:
+        src: grafana.repo # Update this path to where you stored the file
+        dest: /etc/yum.repos.d/grafana.repo
+        mode: '0644'
+
+    - name: Install Grafana Enterprise
+      ansible.builtin.dnf:
+        name: grafana-enterprise
+        state: present
