@@ -3,6 +3,9 @@
   hosts: all
   become: yes  # This is required to gain sudo privileges
 
+  vars_files:
+    - vars.yml
+
   handlers:
     - name: reload systemd
       ansible.builtin.systemd:
@@ -44,8 +47,14 @@
         name: grafana-server
         state: started
         enabled: yes
-        
+
     - name: Ensure firewalld is stopped (since this is a test server).
       service: name=firewalld state=stopped
 
-     
+    - name: Download Prometheus
+      ansible.builtin.unarchive:
+        src: "{{ prometheus_url }}"
+        dest: "{{ dest_dir }}"
+        creates: "{{ dest_dir }}/prometheus/"
+        remote_src: true
+
