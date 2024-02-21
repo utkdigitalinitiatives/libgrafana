@@ -38,3 +38,11 @@
         name: grafana-enterprise
         state: present
       notify: restart grafana
+    - name: Ensure Grafana is started and enabled
+      ansible.builtin.systemd:
+        name: grafana-server
+        state: started
+        enabled: yes
+          
+
+     
