@@ -71,12 +71,12 @@
       ansible.builtin.blockinfile:
         path: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
         block: |
-          - job_name: 'uptime'
-            scrape_interval: 30s
-            scheme: http
-            static_configs:
-              - targets: ['uptime.example.com']
-            basic_auth: 
-              password: "{{ kuma_api_key }}"
+            - job_name: 'uptime'
+              scrape_interval: 30s
+              scheme: http
+              static_configs:
+                - targets: ['uptimekuma.lib.utk.edu']
+              basic_auth: 
+                password: "{{ kuma_api_key }}"
         marker: "# {mark} ANSIBLE MANAGED BLOCK - UPTIME JOB"
         create: no
