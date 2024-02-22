@@ -5,6 +5,7 @@
 
   vars_files:
     - vars.yml
+    - vault/api_key.yml
 
   handlers:
     - name: reload systemd
@@ -58,3 +59,24 @@
         creates: "{{ dest_dir }}/prometheus/"
         remote_src: true
 
+    - name: Find Prometheus directory
+      ansible.builtin.find:
+        paths: "{{ dest_dir }}"
+        patterns: 'prometheus-*'
+        file_type: directory
+      register: prometheus_dir
+
+
+    - name: Append job configuration to Prometheus
+      ansible.builtin.blockinfile:
+        path: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
+        block: |
+          - job_name: 'uptime'
+            scrape_interval: 30s
+            scheme: http
+            static_configs:
+              - targets: ['uptime.example.com']
+            basic_auth: 
+              password: "{{ kuma_api_key }}"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - UPTIME JOB"
+        create: no
