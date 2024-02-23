@@ -17,3 +17,8 @@ Feb 22 2024:
 I have sort of configured prometheus. need to change how the blockinline task formats the block (add 2 space indentation). 
 I also need to adjust the perms for the /etc/prometheus-* directory and add a task in the playbook to start it automatically.
 Next, need to figure out how to connect the prometheus service to the grafana server. There is some info about that [here](https://grafana.com/docs/grafana/latest/getting-started/get-started-grafana-prometheus/). 
+
+Feb 23 2024:
+Got Prometheus to sucessfully connect to our Uptime-Kuma server and it is scrapping data from the endpoints I monitor there. I used a community made dashboard for Uptime-kuma but 
+it doesn't necessiarly have what I need. But it was nice to see it working. Still need to address the indention/formatting issue in the prometheus.yml file. This Grafana and Prometheus
+instance are also only running on a Vagrant box so this project will need to be migrated to a production server eventually if we decide to keep using these products. There is also a Cloud hosted instance that might do all we need for free or very cheaply that I will investigate. 
