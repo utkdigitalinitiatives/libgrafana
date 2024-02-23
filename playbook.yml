@@ -52,6 +52,7 @@
     - name: Ensure firewalld is stopped (since this is a test server).
       service: name=firewalld state=stopped
 
+# need to create seperate Prometheus playbook
     - name: Download Prometheus
       ansible.builtin.unarchive:
         src: "{{ prometheus_url }}"
@@ -66,7 +67,7 @@
         file_type: directory
       register: prometheus_dir
 
-
+# change this to a template and just include the currently exisiting default stuff 
     - name: Append job configuration to Prometheus
       ansible.builtin.blockinfile:
         path: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
