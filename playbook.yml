@@ -53,12 +53,14 @@
       service: name=firewalld state=stopped
 
 # need to create seperate Prometheus playbook
+# need to change this to be idempotent.
     - name: Download Prometheus
       ansible.builtin.unarchive:
         src: "{{ prometheus_url }}"
         dest: "{{ dest_dir }}"
         creates: "{{ dest_dir }}/prometheus/"
         remote_src: true
+# cannot do checksum with unarchive. Change this to get_url then unarchive.
 
     - name: Find Prometheus directory
       ansible.builtin.find:
@@ -66,18 +68,13 @@
         patterns: 'prometheus-*'
         file_type: directory
       register: prometheus_dir
-
-# change this to a template and just include the currently exisiting default stuff 
-    - name: Append job configuration to Prometheus
-      ansible.builtin.blockinfile:
-        path: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
-        block: |
-            - job_name: 'uptime'
-              scrape_interval: 30s
-              scheme: http
-              static_configs:
-                - targets: ['uptimekuma.lib.utk.edu']
-              basic_auth: 
-                password: "{{ kuma_api_key }}"
-        marker: "# {mark} ANSIBLE MANAGED BLOCK - UPTIME JOB"
-        create: no
+ 
+    - name: print prometheus directory
+      ansible.builtin.debug:
+        var: prometheus_dir.files[0].path
+# Might need to change perms on this file since the api key is in plain text.
+    - name: Copy Prometheus configuration template
+      ansible.builtin.template:
+        src: prometheus.yml.j2
+        dest: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
+        force: yes
