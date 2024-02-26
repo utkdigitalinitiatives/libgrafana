@@ -24,6 +24,6 @@ it doesn't necessiarly have what I need. But it was nice to see it working. Stil
 instance are also only running on a Vagrant box so this project will need to be migrated to a production server eventually if we decide to keep using these products. There is also a Cloud hosted instance that might do all we need for free or very cheaply that I will investigate. 
 
 ##### Feb. 26th:
-Had to rewrite part of the Vagrant config to use localhost instead of private ip addresses to work on campus network. Fixed issue with prometheus.yml file formatting. Need to add a task to actually start the prometheus service. Currnetly have to cd to prometheus directory and `sudo ./prometheus --config.file=./prometheus.yml` to start service. 
+Had to rewrite part of the Vagrantfile config to use localhost instead of private ip addresses to work on campus network. Fixed issue with prometheus.yml file formatting. Need to add a task to actually start the prometheus service. Currently have to cd to prometheus directory and `sudo ./prometheus --config.file=./prometheus.yml` to start service. 
 
 The actual grafana dashboards are not instantly intuitive to create. Will need to look into that more. 
