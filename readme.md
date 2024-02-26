@@ -13,12 +13,17 @@ production server. I suspect some of the final configuration I will just need to
 I have Grafana installed and running. I have Prometheus installed. 
 Next, need to configure Prometheus according to [this](https://medium.com/@tomer.klein/real-time-uptime-monitoring-with-uptime-kuma-and-grafana-16638d6a579f)
 
-Feb 22 2024:
+##### Feb 22 2024:
 I have sort of configured prometheus. need to change how the blockinline task formats the block (add 2 space indentation). 
 I also need to adjust the perms for the /etc/prometheus-* directory and add a task in the playbook to start it automatically.
 Next, need to figure out how to connect the prometheus service to the grafana server. There is some info about that [here](https://grafana.com/docs/grafana/latest/getting-started/get-started-grafana-prometheus/). 
 
-Feb 23 2024:
+##### Feb 23 2024:
 Got Prometheus to sucessfully connect to our Uptime-Kuma server and it is scrapping data from the endpoints I monitor there. I used a community made dashboard for Uptime-kuma but 
 it doesn't necessiarly have what I need. But it was nice to see it working. Still need to address the indention/formatting issue in the prometheus.yml file. This Grafana and Prometheus
 instance are also only running on a Vagrant box so this project will need to be migrated to a production server eventually if we decide to keep using these products. There is also a Cloud hosted instance that might do all we need for free or very cheaply that I will investigate. 
+
+##### Feb. 26th:
+Had to rewrite part of the Vagrant config to use localhost instead of private ip addresses to work on campus network. Fixed issue with prometheus.yml file formatting. Need to add a task to actually start the prometheus service. Currnetly have to cd to prometheus directory and `sudo ./prometheus --config.file=./prometheus.yml` to start service. 
+
+The actual grafana dashboards are not instantly intuitive to create. Will need to look into that more. 
