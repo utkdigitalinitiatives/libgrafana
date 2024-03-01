@@ -27,3 +27,15 @@ instance are also only running on a Vagrant box so this project will need to be 
 Had to rewrite part of the Vagrantfile config to use localhost instead of private ip addresses to work on campus network. Fixed issue with prometheus.yml file formatting. Need to add a task to actually start the prometheus service. Currently have to cd to prometheus directory and `sudo ./prometheus --config.file=./prometheus.yml` to start service. 
 
 The actual grafana dashboards are not instantly intuitive to create. Will need to look into that more. 
+
+##### Mar. 1st:
+Started configuring how the playbook would work if it was also going to assign an SSL cert during the installation process. However, this is a bit more complicated then what I want to dive into right now. I decided to set those changes to a new branch and continue working on what needs to be done to deploy the app in it's current state to a live server. 
+
+Those tasks are:
+- [x] break out the prometheus set up to a separate playbook
+- [x] create a prometheus user and group
+- [x] change ownership of installed files and directories to that user and group
+- [ ] create a servicefile for prometheus to work as a systemd unit 
+- [ ] create a task or handler to make sure prometheus is started and enabled
+- [ ] set project inventory so that it will actually target my live server (magpie)
+- [ ] deploy
