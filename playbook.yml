@@ -52,37 +52,13 @@
     - name: Ensure firewalld is stopped (since this is a test server).
       service: name=firewalld state=stopped
 
-# need to create seperate Prometheus playbook
-# need to change this to be idempotent.
-    - name: Download Prometheus
-      ansible.builtin.unarchive:
-        src: "{{ prometheus_url }}"
-        dest: "{{ dest_dir }}"
-        creates: "{{ dest_dir }}/prometheus/"
-        remote_src: true
-# cannot do checksum with unarchive. Change this to get_url then unarchive.
+- import_playbook: prometheus-setup.yml
 
-    - name: Find Prometheus directory
-      ansible.builtin.find:
-        paths: "{{ dest_dir }}"
-        patterns: 'prometheus-*'
-        file_type: directory
-      register: prometheus_dir
- 
-    - name: print prometheus directory
-      ansible.builtin.debug:
-        var: prometheus_dir.files[0].path
-# Might need to change perms on this file since the api key is in plain text.
-    - name: Copy Prometheus configuration template
-      ansible.builtin.template:
-        src: prometheus.yml.j2
-        dest: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
-        force: yes
-
-    - name: Start Prometheus service
-      ansible.builtin.shell:
-        cmd: "./prometheus --config.file=./prometheus.yml"
-        chdir: "{{ prometheus_dir.files[0].path }}"
+# this needs to be changed to create a service file for prometheus and then start/enable it. 
+    # - name: Start Prometheus service
+    #   ansible.builtin.shell:
+    #     cmd: "./prometheus --config.file=./prometheus.yml"
+    #     chdir: "{{ prometheus_dir.files[0].path }}"
         
 
 # need to add task to actually start the 
