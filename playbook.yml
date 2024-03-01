@@ -79,6 +79,11 @@
         dest: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
         force: yes
 
+    - name: Start Prometheus service
+      ansible.builtin.shell:
+        cmd: "./prometheus --config.file=./prometheus.yml"
+        chdir: "{{ prometheus_dir.files[0].path }}"
+        
 
 # need to add task to actually start the 
 # prometheus service:  " ./prometheus --config.file=./prometheus.yml"
