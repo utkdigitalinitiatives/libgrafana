@@ -3,4 +3,4 @@ prometheus_cheksum: 93460f66d17ee70df899e91db350d9705c20b1576800f96acbd78fa004e7
 dest_dir: /etc/
 
 # unzipping in test has the name of the folder as prometheus-2.49.1.linux-amd64
-# might need to change this 
+# might want to change this 

@@ -1,2 +1,2 @@
-./vagrant
+./vagrant/
 templates/prometheus.scrapper.conf.j2

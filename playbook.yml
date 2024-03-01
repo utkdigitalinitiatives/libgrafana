@@ -78,7 +78,18 @@
         src: prometheus.yml.j2
         dest: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
         force: yes
-
+# I access the dir path this way because the find module returned a complex object 
+# that is basically an array. 
 
 # need to add task to actually start the 
 # prometheus service:  " ./prometheus --config.file=./prometheus.yml"
+
+# certbot is already installed on magpie via snap. It appears that I can still 
+# use the geerlingguy.certbot role to manage certs. Might try that. 
+
+  roles:
+    - role: geerlingguy.certbot
+      vars:
+        certbot.install.method: snap
+        
+      
