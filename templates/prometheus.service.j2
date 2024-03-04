@@ -1,0 +1,18 @@
+[Unit]
+Description=Prometheus Server
+After=network.target
+After=grafana-server.service
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+# ExecStart=/etc/prometheus... --config.file=/path/to/prometheus.yml
+ExecStart="{{ prometheus_dir.files[0].path }}/prometheus --config.file={{ prometheus_dir.files[0].path }}/prometheus.yml"
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+
+# " ./prometheus --config.file=./prometheus.yml"

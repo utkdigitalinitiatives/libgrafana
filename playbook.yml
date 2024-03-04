@@ -4,7 +4,7 @@
   become: yes  # This is required to gain sudo privileges
 
   vars_files:
-    - vars.yml
+    - vars/vars.yml
     - vault/api_key.yml
 
   handlers:
@@ -52,7 +52,7 @@
     - name: Ensure firewalld is stopped (since this is a test server).
       service: name=firewalld state=stopped
 
-- import_playbook: prometheus-setup.yml
+- import_playbook: tasks/prometheus-setup.yml
 
 # this needs to be changed to create a service file for prometheus and then start/enable it. 
     # - name: Start Prometheus service

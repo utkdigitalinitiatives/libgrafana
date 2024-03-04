@@ -1,0 +1,6 @@
+prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
+prometheus_cheksum: 93460f66d17ee70df899e91db350d9705c20b1576800f96acbd78fa004e7dc07
+dest_dir: /etc/
+
+# unzipping in test has the name of the folder as prometheus-2.49.1.linux-amd64
+# might need to change this 
