@@ -39,3 +39,13 @@ Those tasks are:
 - [ ] create a task or handler to make sure prometheus is started and enabled
 - [ ] set project inventory so that it will actually target my live server (magpie)
 - [ ] deploy
+
+
+##### Mar. 4th: 
+Updated task list:
+- [x] create a servicefile for prometheus to work as a systemd unit 
+- [x] create a task or handler to make sure prometheus is started and enabled
+- [ ] deal with SELinux, which is preventing the systemd unit from starting 
+- [ ] test to make sure everything is properly enabled and started between reboots
+- [ ] set project inventory so that it will actually target my live server (magpie)
+- [ ] deploy
