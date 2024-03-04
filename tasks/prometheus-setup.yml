@@ -79,4 +79,4 @@
         name: prometheus.service  # Name of the systemd service
         state: started  # Ensure the service is started
         enabled: yes  # Ensure the service is enabled to start at boot
-  
+  # SELinux stopped this from working... 
