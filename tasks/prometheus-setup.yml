@@ -7,6 +7,11 @@
     - "../vars/vars.yml"
     - "../vault/api_key.yml"
 
+  handlers:
+    - name: reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
+
   pre_tasks:
     - name: Create Prometheus group
       ansible.builtin.group:
@@ -31,7 +36,7 @@
         creates: "{{ dest_dir }}/prometheus/"
         remote_src: true
 # cannot do checksum with unarchive. Change this to get_url then unarchive.
-
+# I should just re-write this so that it uses the shell module to `mv` the directory and rename. 
     - name: Find Prometheus directory
       ansible.builtin.find:
         paths: "{{ dest_dir }}"
@@ -64,7 +69,10 @@
       ansible.builtin.template:
         src: "../templates/prometheus.service.j2"
         dest: /etc/systemd/system/prometheus.service
-      notify: Reload systemd daemon
+        owner: prometheus
+        group: prometheus
+        mode: 0755
+      notify: reload systemd
   
     - name: Start Prometheus service
       ansible.builtin.systemd:
