@@ -56,7 +56,8 @@
       ansible.builtin.dnf:
         name: policycoreutils-python-utils
         state: present  
-
+    # this should probably be removed in production. I need the module on the test instance to help understand how to 
+    # create the SELinux custom policy module that will allow the systemd unit to start. 
 - import_playbook: tasks/prometheus-setup.yml
 
     
