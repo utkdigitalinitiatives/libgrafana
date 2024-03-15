@@ -52,7 +52,15 @@
     - name: Ensure firewalld is stopped (since this is a test server).
       service: name=firewalld state=stopped
 
+    - name: Install policycoreutils-python-utils for audit2allow
+      ansible.builtin.dnf:
+        name: policycoreutils-python-utils
+        state: present  
+
 - import_playbook: tasks/prometheus-setup.yml
+
+    
+  
 
 # this needs to be changed to create a service file for prometheus and then start/enable it. 
     # - name: Start Prometheus service
