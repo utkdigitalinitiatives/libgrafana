@@ -31,17 +31,15 @@ The actual grafana dashboards are not instantly intuitive to create. Will need t
 ##### Mar. 1st:
 Started configuring how the playbook would work if it was also going to assign an SSL cert during the installation process. However, this is a bit more complicated then what I want to dive into right now. I decided to set those changes to a new branch and continue working on what needs to be done to deploy the app in it's current state to a live server. 
 
-Those tasks are:
-- [x] break out the prometheus set up to a separate playbook
-- [x] create a prometheus user and group
-- [x] change ownership of installed files and directories to that user and group
-- [ ] create a servicefile for prometheus to work as a systemd unit 
-- [ ] create a task or handler to make sure prometheus is started and enabled
-- [ ] set project inventory so that it will actually target my live server (magpie)
-- [ ] deploy
 
 
 ##### Mar. 4th: 
+Created servicefile for prometheus and set some handlers for it. 
+
+##### Mar 18th: 
+Re-organized project structure so that main.yml calls separate playbooks to install and configure Grafana and Prometheus. I was having an issue going from the main playbook to the prometheus one and back. The solutions to my issue were to either rewrite the prometheus playbook to be just a series of tasks, or more simply, create a new main playbook that simply imports the other two playbooks. This will also help going forward if I need to create another playbook. For instance, I might create a new playbook to set up the linux server environment (SELinux, users and groups, Firewall settings, Apache settings, etc) before starting the app installation process. In the future, this set up playbook could have conditional logic to work with any flavor or linux or webserver technology. I will likely need another playbook to configure SSL certification stuff as well (this might be a geerlingguy role, I am not 100% sure.). 
+
+
 Updated task list:
 - [x] create a servicefile for prometheus to work as a systemd unit 
 - [x] create a task or handler to make sure prometheus is started and enabled
@@ -49,3 +47,5 @@ Updated task list:
 - [ ] test to make sure everything is properly enabled and started between reboots
 - [ ] set project inventory so that it will actually target my live server (magpie)
 - [ ] deploy
+- [ ] apache reverse proxy
+- [ ] ssl cert
