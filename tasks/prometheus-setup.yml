@@ -1,5 +1,5 @@
 ---
-- name: Install Prometheus 
+- name: Install Prometheus
   hosts: all
   become: true
 
@@ -26,8 +26,7 @@
         create_home: no
         shell: /sbin/nologin
         state: present
-
-# need to change this to be idempotent.
+    # need to change this to be idempotent.
   tasks:  
     - name: Download Prometheus
       ansible.builtin.unarchive:
@@ -35,8 +34,8 @@
         dest: "{{ dest_dir }}"
         creates: "{{ dest_dir }}/prometheus/"
         remote_src: true
-# cannot do checksum with unarchive. Change this to get_url then unarchive.
-# I should just re-write this so that it uses the shell module to `mv` the directory and rename. 
+ # cannot do checksum with unarchive. Change this to get_url then unarchive.
+ # I should just re-write this so that it uses the shell module to `mv` the directory and rename. 
     - name: Find Prometheus directory
       ansible.builtin.find:
         paths: "{{ dest_dir }}"
@@ -49,7 +48,7 @@
       ansible.builtin.debug:
         var: prometheus_dir.files[0].path
 
-# Might need to change perms on this file since the api key is in plain text.
+ # Might need to change perms on this file since the api key is in plain text.
     - name: Copy Prometheus configuration template
       ansible.builtin.template:
         src: "../templates/prometheus.yml.j2"

@@ -1,0 +1,7 @@
+---
+- name: Instal Grafana and Prometheus
+  hosts: all
+  become: true
+
+- import_playbook: tasks/grafana-setup.yml
+- import_playbook: tasks/prometheus-setup.yml
