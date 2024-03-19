@@ -7,7 +7,7 @@ After=grafana-server.service
 User=prometheus
 Group=prometheus
 Type=simple
-ExecStart={{ prometheus_dir.files[0].path }}/prometheus --config.file={{ prometheus_dir.files[0].path }}/prometheus.yml
+ExecStart={{ prometheus_dir.files[0].path }}/prometheus --config.file={{ prometheus_dir.files[0].path }}/prometheus.yml --storage.tsdb.path={{ prometheus_dir.files[0].path }}/data
 WorkingDirectory={{ prometheus_dir.files[0].path }}
 Restart=on-failure
 

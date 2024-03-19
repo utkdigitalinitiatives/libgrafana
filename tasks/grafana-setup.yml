@@ -33,7 +33,7 @@
 
     - name: Copy Grafana repo file
       ansible.builtin.copy:
-        src: grafana.repo # Update this path to where you stored the file
+        src: ../files/grafana.repo # Update this path to where you stored the file
         dest: /etc/yum.repos.d/grafana.repo
         mode: '0644'
 
