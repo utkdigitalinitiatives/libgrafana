@@ -1,4 +1,4 @@
-./vagrant
+.vagrant/
 templates/prometheus.scrapper.conf.j2
 .vscode/
-./vagrant/
+inventory.ini
