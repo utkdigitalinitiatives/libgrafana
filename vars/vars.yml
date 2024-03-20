@@ -1,6 +1,16 @@
-prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
-prometheus_cheksum: 93460f66d17ee70df899e91db350d9705c20b1576800f96acbd78fa004e7dc07
-dest_dir: /etc/
+prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.45.4/prometheus-2.45.4.linux-amd64.tar.gz
+# prometheus_checksum: 14bb6eb9db49c5dcbf1d6412e96a229444a39e13dc97a9aca7fadaa3ca5ef981
+# Above is the LTS release
+# prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
+
+# dest_dir: /etc/
+
+
+# set prometheus config directory
+conf_dir: /etc/
+
+# set data storage directory
+data_dir: /var/lib/prometheus
 
 # unzipping in test has the name of the folder as prometheus-2.49.1.linux-amd64
 # might need to change this 

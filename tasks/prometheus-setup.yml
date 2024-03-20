@@ -26,56 +26,102 @@
         create_home: no
         shell: /sbin/nologin
         state: present
-    # need to change this to be idempotent.
-  tasks:  
-    - name: Download Prometheus
-      ansible.builtin.unarchive:
-        src: "{{ prometheus_url }}"
-        dest: "{{ dest_dir }}"
-        creates: "{{ dest_dir }}/prometheus/"
-        remote_src: true
- # cannot do checksum with unarchive. Change this to get_url then unarchive.
- # I should just re-write this so that it uses the shell module to `mv` the directory and rename. 
-    - name: Find Prometheus directory
-      ansible.builtin.find:
-        paths: "{{ dest_dir }}"
-        patterns: 'prometheus-*'
-        file_type: directory
-      register: prometheus_dir
-      # may need to change this to a fact so that it can be used elsewhere
-      
-    - name: print prometheus directory
-      ansible.builtin.debug:
-        var: prometheus_dir.files[0].path
 
- # Might need to change perms on this file since the api key is in plain text.
-    - name: Copy Prometheus configuration template
-      ansible.builtin.template:
-        src: "../templates/prometheus.yml.j2"
-        dest: "{{ prometheus_dir.files[0].path }}/prometheus.yml"
-        force: yes
-
-    - name: Set ownership for Prometheus directories and files.
+    - name: Create required directories
       ansible.builtin.file:
         path: "{{ item }}"
+        state: directory
         owner: prometheus
         group: prometheus
-        recurse: yes
-      loop: 
-        - "{{ prometheus_dir.files[0].path }}"  
+        mode: '0755'
+      loop:
+        - /etc/prometheus
+        - /var/lib/prometheus
 
-    - name: Create Prometheus systemd service file
-      ansible.builtin.template:
-        src: "../templates/prometheus.service.j2"
-        dest: /etc/systemd/system/prometheus.service
-        owner: prometheus
-        group: prometheus
-        mode: 0755
-      notify: reload systemd
-  
-    - name: Start Prometheus service
-      ansible.builtin.systemd:
-        name: prometheus.service  # Name of the systemd service
-        state: started  # Ensure the service is started
-        enabled: yes  # Ensure the service is enabled to start at boot
-  # SELinux stopped this from working... 
+  tasks: 
+  - name: Download Prometheus
+    ansible.builtin.get_url:
+      url: "{{ prometheus_url }}"
+      dest: "/tmp/prometheus.tar.gz"
+
+  - name: Unarchive Prometheus
+    ansible.builtin.unarchive:
+      src: "/tmp/prometheus.tar.gz"
+      dest: "/tmp/"
+      remote_src: yes
+
+  - name: Remove the existing prometheus-files directory if it exists
+    ansible.builtin.file:
+      path: /tmp/prometheus-files
+      state: absent
+
+  - name: Rename unarchived direrectory
+    ansible.builtin.command:
+      cmd: "mv /tmp/prometheus-2.45.4.linux-amd64 /tmp/prometheus-files"    
+    
+  - name: Copy prometheus binary 
+    ansible.builtin.copy:
+      src: "/tmp/prometheus-files/prometheus"
+      dest: "/usr/local/bin/prometheus"
+      remote_src: yes
+      mode: '0755'
+
+  - name: Copy promtool binary
+    ansible.builtin.copy:
+      src: "/tmp/prometheus-files/promtool"
+      dest: "/usr/local/bin/promtool"
+      remote_src: yes
+      mode: '0755'
+
+  - name: Set ownership of prometheus binary
+    ansible.builtin.file:
+      path: "/usr/local/bin/prometheus"
+      owner: prometheus
+      group: prometheus
+      mode: '0755'
+
+  - name: Set ownership of promtool binary
+    ansible.builtin.file:
+      path: "/usr/local/bin/promtool"
+      owner: prometheus
+      group: prometheus
+      mode: '0755'
+
+  - name: Copy consoles directory to /etc/prometheus
+    ansible.builtin.copy:
+      src: "/tmp/prometheus-files/consoles"
+      dest: "/etc/prometheus/consoles"
+      remote_src: yes
+      owner: prometheus
+      group: prometheus
+      mode: '0755'
+    
+  - name: Copy console_libraries to /etc/prometheus
+    ansible.builtin.copy:
+      src: "/tmp/prometheus-files/console_libraries"
+      dest: "/etc/prometheus/console_libraries"
+      remote_src: yes
+      owner: prometheus
+      group: prometheus
+      mode: '0755'
+
+  - name: Copy Prometheus configuration template
+    ansible.builtin.template:
+     src: "../templates/prometheus.yml.j2"
+     dest: "/etc/prometheus/prometheus.yml"
+     force: yes
+
+  - name: Create Prometheus systemd service file
+    ansible.builtin.copy:
+      src: "../files/prometheus.service"
+      dest: /etc/systemd/system/prometheus.service
+      owner: prometheus 
+      group: prometheus
+      mode: 0755
+    notify: reload systemd     
+
+  - name: Start Prometheus service
+    ansible.builtin.systemd:
+      name: prometheus.service
+      state: started
+      enabled: yes
