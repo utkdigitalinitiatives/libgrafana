@@ -2,3 +2,5 @@
 templates/prometheus.scrapper.conf.j2
 .vscode/
 inventory.ini
+tasks/prometheus-setup.yml.old
+
