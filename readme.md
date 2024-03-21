@@ -39,13 +39,20 @@ Created servicefile for prometheus and set some handlers for it.
 ##### Mar 18th: 
 Re-organized project structure so that main.yml calls separate playbooks to install and configure Grafana and Prometheus. I was having an issue going from the main playbook to the prometheus one and back. The solutions to my issue were to either rewrite the prometheus playbook to be just a series of tasks, or more simply, create a new main playbook that simply imports the other two playbooks. This will also help going forward if I need to create another playbook. For instance, I might create a new playbook to set up the linux server environment (SELinux, users and groups, Firewall settings, Apache settings, etc) before starting the app installation process. In the future, this set up playbook could have conditional logic to work with any flavor or linux or webserver technology. I will likely need another playbook to configure SSL certification stuff as well (this might be a geerlingguy role, I am not 100% sure.). 
 
+##### Mar 21st:
+Big re-write of the Prometheus playbook. I resolved my SELinux issues by more closely adhering to Linux Filesystem Hierarchy. SELinux did not like, for example, application state changed being written to `/etc/` so I moved that to `/var/lib/`. Also moved the binaries to `/usr/local/bin/`. 
+
+Also started writing the apache conf file that this app will need. I need to decide how that part will actually be deployed. I will probably create a new playbook just for the apache config. 
+
+After that I need to figure out how to handle the ssl cert. I am hoping to figure out the geerlingguy.certbot role for that part. I am just worried about it somehow messing up the existing vhosts on the server. 
 
 Updated task list:
 - [x] create a servicefile for prometheus to work as a systemd unit 
 - [x] create a task or handler to make sure prometheus is started and enabled
-- [ ] deal with SELinux, which is preventing the systemd unit from starting 
-- [ ] test to make sure everything is properly enabled and started between reboots
+- [x] deal with SELinux, which is preventing the systemd unit from starting 
+- [x] test to make sure everything is properly enabled and started between reboots
+- [ ] create playbook to deploy apache config
+- [ ] Figure out how to handle ssl cert/certbot
 - [ ] set project inventory so that it will actually target my live server (magpie)
 - [ ] deploy
-- [ ] apache reverse proxy
-- [ ] ssl cert
+

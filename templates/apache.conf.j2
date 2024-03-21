@@ -1,0 +1,18 @@
+<VirtualHost "{{ server_ip_addr }}:80">
+    ServerName "{{ apache_server_name }}"
+    DocumentRoot "{{ apache_document_root }}"
+
+    <Directory "{{ apache_document_root }}">
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+    </Directory>
+
+    # Reverse Proxy
+    ProxyRequests Off
+    ProxyPreserveHost On
+    ProxyPass / "{{ reverse_proxy_path }}"
+    ProxyPassReverse / "{{ reverse_proxy_path }}"
+
+    ErrorLog ${APACHE_LOG_DIR}/{{ apache_server_name }}_error.log
+    CustomLog ${APACHE_LOG_DIR}/{{ apache_server_name }}_access.log combined
+</VirtualHost>
