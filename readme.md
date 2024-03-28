@@ -46,6 +46,9 @@ Also started writing the apache conf file that this app will need. I need to dec
 
 After that I need to figure out how to handle the ssl cert. I am hoping to figure out the geerlingguy.certbot role for that part. I am just worried about it somehow messing up the existing vhosts on the server. 
 
+##### Mar 28th:
+Due to getting a new work laptop, I had to spend some time back up my test environments. There was a few complications in going from Intel Mac to M3 chip. The big thing for this project is that the prometheus-setup.yml playbook now has some conditional logic to detect which cpu architecture the host is using and it will download and install the appropriate version. Between this and other work I was not able to make much progress on the apache/ssl cert side of things this week. 
+
 Updated task list:
 - [x] create a servicefile for prometheus to work as a systemd unit 
 - [x] create a task or handler to make sure prometheus is started and enabled
