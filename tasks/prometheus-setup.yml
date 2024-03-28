@@ -43,6 +43,13 @@
     ansible.builtin.get_url:
       url: "{{ prometheus_url }}"
       dest: "/tmp/prometheus.tar.gz"
+    when: ansible_architecture == "x86_64"
+
+  - name: Download Prometheus arm64
+    ansible.builtin.get_url:
+      url: "{{ prometheus_url_arm64 }}"
+      dest: "/tmp/prometheus.tar.gz"
+    when: ansible_architecture == "aarch64"
 
   - name: Unarchive Prometheus
     ansible.builtin.unarchive:
@@ -58,7 +65,13 @@
   - name: Rename unarchived direrectory
     ansible.builtin.command:
       cmd: "mv /tmp/prometheus-2.45.4.linux-amd64 /tmp/prometheus-files"    
-    
+    when: ansible_architecture == "x86_64"
+
+  - name: Rename unarchived direrectory
+    ansible.builtin.command:
+      cmd: "mv /tmp/prometheus-2.45.4.linux-arm64 /tmp/prometheus-files"    
+    when: ansible_architecture == "aarch64"
+
   - name: Copy prometheus binary 
     ansible.builtin.copy:
       src: "/tmp/prometheus-files/prometheus"
@@ -109,6 +122,8 @@
     ansible.builtin.template:
      src: "../templates/prometheus.yml.j2"
      dest: "/etc/prometheus/prometheus.yml"
+     owner: prometheus
+     group: prometheus
      force: yes
 
   - name: Create Prometheus systemd service file

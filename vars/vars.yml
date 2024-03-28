@@ -1,4 +1,5 @@
 prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.45.4/prometheus-2.45.4.linux-amd64.tar.gz
+prometheus_url_arm64: https://github.com/prometheus/prometheus/releases/download/v2.45.4/prometheus-2.45.4.linux-arm64.tar.gz
 # prometheus_checksum: 14bb6eb9db49c5dcbf1d6412e96a229444a39e13dc97a9aca7fadaa3ca5ef981
 # Above is the LTS release
 # prometheus_url: https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
