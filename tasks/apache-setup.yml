@@ -1,0 +1,34 @@
+---
+# Set up Apache for use with grafana
+- hosts: all
+  become: true
+
+  vars_files:
+    - vars/vars.yml
+
+  handlers:
+   - name: restart httpd
+     ansible.builtin.systemd:
+      name: httpd
+      state: reloaded
+
+  tasks:
+    - name: Ensure docroot exists
+      ansible.builtin.file:
+        path: "{{ apache_document_root }}"
+        state: directory
+
+    - name: Copy apache config
+      ansible.builtin.template:
+        src: tempplates/grafana.conf.j2
+        dest: /etc/httpd/sites-enabled/grafana.conf
+        mode: 0644
+      notify: restart httpd
+
+  roles: 
+    - geerlingguy.certbot
+
+    
+# Ensure docroot exists 
+# Copy apache config 
+# Call certbot role 
