@@ -5,3 +5,4 @@
 
 - import_playbook: tasks/grafana-setup.yml
 - import_playbook: tasks/prometheus-setup.yml
+- import_playbook: tasks/apache-setup.yml
