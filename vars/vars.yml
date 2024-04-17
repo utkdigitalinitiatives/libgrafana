@@ -16,8 +16,15 @@ data_dir: /var/lib/prometheus
 # unzipping in test has the name of the folder as prometheus-2.49.1.linux-amd64
 # might need to change this 
 
-server_ip_addr: "160.36.239.110"
+server_ip_addr: "160.36.239.110" # magpie 
 apache_server_name: "grafana.lib.utk.edu"
-apache_document_root: "/vhosts/{{ apache_server_name }}"
+apache_document_root: "/vhosts/grafana"
 APACHE_LOG_DIR: "logs/"
-reverse_proxy_path: "http://localhost:3333/"
+reverse_proxy_path: "http://127.0.0.1:3333/"
+
+# Certbot variables
+certbot_install_method: snap
+certbot_create_if_missing: true
+certbot_certs:
+  - domains:
+    - "{{ inventory_hostname }}"
