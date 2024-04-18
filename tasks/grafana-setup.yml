@@ -49,13 +49,13 @@
         state: started
         enabled: yes
 
-    - name: Ensure firewalld is stopped (since this is a test server).
-      service: name=firewalld state=stopped
+ #   - name: Ensure firewalld is stopped (since this is a test server).
+ #     service: name=firewalld state=stopped
 
-    - name: Install policycoreutils-python-utils for audit2allow
-      ansible.builtin.dnf:
-        name: policycoreutils-python-utils
-        state: present  
+#    - name: Install policycoreutils-python-utils for audit2allow
+#      ansible.builtin.dnf:
+#        name: policycoreutils-python-utils
+#        state: present  
     # this should probably be removed in production. I need the module on the test instance to help understand how to 
     # create the SELinux custom policy module that will allow the systemd unit to start. 
 #     - name: Include tasks from prometheus-setup import_playbook

@@ -1,4 +1,4 @@
-<VirtualHost "*:80"> # these might need server ip
+<VirtualHost 160.36.239.110:80> # these might need server ip
     ServerName "{{ apache_server_name }}"
     DocumentRoot "{{ apache_document_root }}"
 
@@ -8,11 +8,11 @@
     ProxyPass / "{{ reverse_proxy_path }}"
     ProxyPassReverse / "{{ reverse_proxy_path }}"
 
-    ErrorLog ${APACHE_LOG_DIR}/{{ apache_server_name }}_error.log
-    CustomLog ${APACHE_LOG_DIR}/{{ apache_server_name }}_access.log combined
+    ErrorLog {{ APACHE_LOG_DIR }}/{{ apache_server_name }}_error.log
+    CustomLog {{ APACHE_LOG_DIR }}/{{ apache_server_name }}_access.log combined
 </VirtualHost>
 
-<VirtualHost *:443>
+<VirtualHost 160.36.239.110:443>
     ServerName "{{ apache_server_name }}"
     DocumentRoot "{{ apache_document_root }}"
 
@@ -22,8 +22,8 @@
     ProxyPass / "{{ reverse_proxy_path }}"
     ProxyPassReverse / "{{ reverse_proxy_path }}"
 
-    ErrorLog ${APACHE_LOG_DIR}/{{ apache_server_name }}_ssl_error.log
-    CustomLog ${APACHE_LOG_DIR}/{{ apache_server_name }}_ssl_access.log combined
+    ErrorLog {{ APACHE_LOG_DIR }}/{{ apache_server_name }}_ssl_error.log
+    CustomLog {{ APACHE_LOG_DIR }}/{{ apache_server_name }}_ssl_access.log combined
 
     SSLEngine on
     SSLCertificateFile /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem

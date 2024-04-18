@@ -20,7 +20,7 @@ server_ip_addr: "160.36.239.110" # magpie
 apache_server_name: "grafana.lib.utk.edu"
 apache_document_root: "/vhosts/grafana"
 APACHE_LOG_DIR: "logs/"
-reverse_proxy_path: "http://127.0.0.1:3333/"
+reverse_proxy_path: "http://127.0.0.1:3000/"
 
 # Certbot variables
 certbot_install_method: snap
