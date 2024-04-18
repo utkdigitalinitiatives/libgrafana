@@ -49,13 +49,20 @@ After that I need to figure out how to handle the ssl cert. I am hoping to figur
 ##### Mar 28th:
 Due to getting a new work laptop, I had to spend some time back up my test environments. There was a few complications in going from Intel Mac to M3 chip. The big thing for this project is that the prometheus-setup.yml playbook now has some conditional logic to detect which cpu architecture the host is using and it will download and install the appropriate version. Between this and other work I was not able to make much progress on the apache/ssl cert side of things this week. 
 
+##### April 18th:
+Sucessuflly deployed to magpie on the 17th (yesterday). The major issues during deployment were:
+- change certbot role variables in the actual role. Ex. need to change certbot_create_standalone_stop_services from 'apache' to 'httpd' to reflect the RHEL environment. I think I can just add this as a varible in vars.yml but i'm not sure. 
+- In the inventory file, leave out the www on the hostname. 
+- The apache conf file needs the server ip in the `<VirtualHost *:80>` block. 
+- Minor syntax errors throughout. ex. `ErrorLog ${APACHE_LOG_DIR}/` instead of `ErrorLog {{ APACHE_LOG_DIR }}/`
+
 Updated task list:
 - [x] create a servicefile for prometheus to work as a systemd unit 
 - [x] create a task or handler to make sure prometheus is started and enabled
 - [x] deal with SELinux, which is preventing the systemd unit from starting 
 - [x] test to make sure everything is properly enabled and started between reboots
-- [ ] create playbook to deploy apache config
-- [ ] Figure out how to handle ssl cert/certbot
-- [ ] set project inventory so that it will actually target my live server (magpie)
-- [ ] deploy
+- [x] create playbook to deploy apache config
+- [x] Figure out how to handle ssl cert/certbot
+- [x] set project inventory so that it will actually target my live server (magpie)
+- [x] deploy
 

@@ -45,7 +45,7 @@ certbot_create_command: >-
 
 certbot_create_standalone_stop_services:
   # - nginx
-  - apache
+  - httpd
   # - varnish
 
 # Available options: 'package', 'snap', 'source'.
