@@ -10,6 +10,10 @@
 
     ErrorLog {{ APACHE_LOG_DIR }}/{{ apache_server_name }}_error.log
     CustomLog {{ APACHE_LOG_DIR }}/{{ apache_server_name }}_access.log combined
+
+    RewriteEngine on
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,R=301]
 </VirtualHost>
 
 <VirtualHost 160.36.239.110:443>
